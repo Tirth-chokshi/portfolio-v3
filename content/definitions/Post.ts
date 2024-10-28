@@ -35,14 +35,14 @@ export const Post = defineDocumentType(() => ({
         const slugger = new GithubSlugger()
 
         // https://stackoverflow.com/a/70802303
-        const regXHeader = /\n\n(?<flag>#{1,6})\s+(?<content>.+)/g
+        const regXHeader = /\n\n(#{1,6})\s+(.+)/g // Changed to indexed groups
 
         const headings = Array.from(doc.body.raw.matchAll(regXHeader)).map(
-          ({ groups }) => {
-            const flag = groups?.flag
-            const content = groups?.content
+          (match) => {
+            const flag = match[1]; // Accessing the first capturing group
+            const content = match[2]; // Accessing the second capturing group
             return {
-              heading: flag?.length,
+              heading: flag.length,
               text: content,
               slug: content ? slugger.slug(content) : undefined,
             }
