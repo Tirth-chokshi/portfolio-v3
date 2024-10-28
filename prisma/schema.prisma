@@ -1,0 +1,22 @@
+datasource db {
+     provider = "postgresql"
+     url      = env("DATABASE_URL")
+   }
+
+   generator client {
+     provider = "prisma-client-js"
+   }
+
+   model Post {
+     id        String   @id @default(cuid())
+     createdAt DateTime @default(now())
+     slug      String   @unique
+     likes     Int      @default(0)
+     views     Int      @default(0)
+   }
+
+   model Session {
+     id        String   @id
+     createdAt DateTime @default(now())
+     likes     Int      @default(0)
+   }
